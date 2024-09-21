@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">MyUSSD</string>
+    <string name="tilni_o_zgartirish">Tilni o\'zgartirish</string>
+    <string name="dasturni_baholash">Dasturni baholash</string>
+    <string name="qisqa_buyruqlar">Qisqa buyruqlar</string>
+    <string name="tarif_rejalari">Tarif rejalari</string>
+    <string name="internet_paketlar">Internet paketlar</string>
+    <string name="daqiqalar">Daqiqalar</string>
+    <string name="sms_toplamlar">Sms to\'plamlar</string>
+    <string name="xizlatlar">Xizmatlar</string>
+    <string name="kabinet">Kabinet</string>
+    <string name="balans">Balans</string>
+    <string name="operator">Operator</string>
+    <string name="ussd_kodlar">USSD kodlar</string>
+    <string name="tarif">Tarif</string>
+</resources>
