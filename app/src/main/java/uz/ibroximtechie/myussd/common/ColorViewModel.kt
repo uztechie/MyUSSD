@@ -60,7 +60,8 @@ class ColorViewModel:ViewModel() {
                         primaryColor = primaryColor,
                         primaryColorDark = primaryColorDark,
                         currentCompany = event.companyId,
-                        companyName = companyName
+                        companyName = companyName,
+                        language = SharedPref.language
                     )
                 }
             }

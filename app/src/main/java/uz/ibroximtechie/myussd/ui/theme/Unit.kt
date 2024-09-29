@@ -10,3 +10,4 @@ val titleLarge = 18.sp
 val titleMedium = 16.sp
 
 val contentTextSize = 12.sp
+val contentTextSizeMedium = 14.sp

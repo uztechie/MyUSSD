@@ -13,4 +13,7 @@
     <string name="operator">Operator</string>
     <string name="ussd_kodlar">USSD kodlar</string>
     <string name="tarif">Tarif</string>
+    <string name="faollashtirish">Faollashtirish</string>
+    <string name="batafsil">Batafsil</string>
+    <string name="otish_kodi">O\'tish kodi</string>
 </resources>
