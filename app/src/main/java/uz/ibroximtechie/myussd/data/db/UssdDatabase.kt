@@ -5,12 +5,13 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.ussd.domain.model.Category
+import com.example.ussd.domain.model.Internet
+import com.example.ussd.domain.model.Minute
 import com.example.ussd.domain.model.Tarif
 import uz.ibroximtechie.myussd.domain.model.Company
-import uz.ibroximtechie.myussd.domain.model.Internet
 import uz.ibroximtechie.myussd.domain.model.USSDCode
 
-@Database(entities = [Company::class, USSDCode::class, Tarif::class, Category::class], version = 4, exportSchema = true)
+@Database(entities = [Company::class, USSDCode::class, Tarif::class, Category::class, Internet::class, Minute::class], version = 4, exportSchema = true)
 abstract class UssdDatabase:RoomDatabase() {
     abstract fun dao():UssdDao
 

@@ -3,8 +3,8 @@ package com.example.ussd.domain.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "internet")
-data class Internet (
+@Entity(tableName = "news")
+data class News(
     @PrimaryKey(autoGenerate = true)
     val _id: Int = -1,
     val itemId: Int = -1,
@@ -14,19 +14,13 @@ data class Internet (
     val desc_uz: String? = null,
     val desc_ru: String? = null,
     val desc_kr: String? = null,
-    val price: Double = 0.0,
-    val type: Int = -1,
-    val catid: Int = -1,
-    val kod: String? = null,
-    val kod2: String? = null,
-    val status: Int = -1,
-    val cat_uz: String? = null,
-    val cat_ru: String? = null,
-    val cat_kr: String? = null,
-    val amount_uz: String? = null,
-    val amount_ru: String? = null,
-    val amount_kr: String? = null,
+    val photo_uz: String? = null,
+    val photo_ru: String? = null,
+    val photo_kr: String? = null,
     val company_id: Int = -1,
+    val url_uz: String? = null,
+    val url_ru: String? = null,
+    val url_kr: String? = null,
     val created_at: String? = null,
     val updated_at: String? = null
 )

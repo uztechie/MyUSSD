@@ -58,6 +58,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import uz.ibroximtechie.myussd.R
+import uz.ibroximtechie.myussd.common.CategoryType
 import uz.ibroximtechie.myussd.common.ColorEvent
 import uz.ibroximtechie.myussd.common.ColorState
 import uz.ibroximtechie.myussd.common.util.CompanyType
@@ -324,7 +325,10 @@ fun HomeScreen(
                             MainActionButton(
                                 modifier = Modifier
                                     .weight(1f)
-                                    .clickable { },
+                                    .clickable {
+                                               navController
+                                                   .navigate(Screen.UssdServiceScreen(CategoryType.INTERNET.typeId))
+                                    },
                                 icon = painterResource(id = R.drawable.ic_world),
                                 iconColor = colorState.primaryColor,
                                 text = stringResource(id = R.string.internet_paketlar)
@@ -347,7 +351,10 @@ fun HomeScreen(
                             MainActionButton(
                                 modifier = Modifier
                                     .weight(1f)
-                                    .clickable { },
+                                    .clickable {
+                                        navController
+                                            .navigate(Screen.UssdServiceScreen(CategoryType.MINUTE.typeId))
+                                    },
                                 icon = painterResource(id = R.drawable.ic_access_time_black_24dp),
                                 iconColor = colorState.primaryColor,
                                 text = stringResource(id = R.string.daqiqalar)

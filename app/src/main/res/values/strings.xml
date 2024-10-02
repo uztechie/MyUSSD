@@ -16,4 +16,8 @@
     <string name="faollashtirish">Faollashtirish</string>
     <string name="batafsil">Batafsil</string>
     <string name="otish_kodi">O\'tish kodi</string>
+    <string name="internet">Internet</string>
+    <string name="toplam_narxi">To\'plam narxi</string>
+    <string name="toplam_miqdori">To\'plam miqdori</string>
+    <string name="som">So\'m</string>
 </resources>

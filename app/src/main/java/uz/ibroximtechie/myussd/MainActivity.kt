@@ -22,6 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import androidx.room.Room
 import com.example.ussd.domain.model.Tarif
+import uz.ibroximtechie.myussd.common.CategoryType
 import uz.ibroximtechie.myussd.common.ColorViewModel
 import uz.ibroximtechie.myussd.common.ColorViewModelFactory
 import uz.ibroximtechie.myussd.data.db.UssdDatabase
@@ -38,6 +39,9 @@ import uz.ibroximtechie.myussd.presentation.tarif.components.TarifScreen
 import uz.ibroximtechie.myussd.presentation.ussd_codes.UssdViewModel
 import uz.ibroximtechie.myussd.presentation.ussd_codes.UssdViewModelFactory
 import uz.ibroximtechie.myussd.presentation.ussd_codes.component.CodeScreen
+import uz.ibroximtechie.myussd.presentation.ussdservices.UssdServiceViewModel
+import uz.ibroximtechie.myussd.presentation.ussdservices.UssdServiceViewModelFactory
+import uz.ibroximtechie.myussd.presentation.ussdservices.component.UssdServiceScreen
 import uz.ibroximtechie.myussd.ui.theme.MyUSSDTheme
 import kotlin.reflect.typeOf
 
@@ -58,6 +62,9 @@ class MainActivity : ComponentActivity() {
         val tarifViewModel by viewModels<TarifViewModel> (
             factoryProducer = { TarifViewModelFactory(repository) }
         )
+        val ussdServiceViewModel by viewModels<UssdServiceViewModel> (
+            factoryProducer = { UssdServiceViewModelFactory(repository) }
+        )
 
 
 
@@ -68,6 +75,7 @@ class MainActivity : ComponentActivity() {
                 val colorState by colorViewModel.state.collectAsState()
                 val ussdState by ussdViewModel.state.collectAsState()
                 val tarifState by tarifViewModel.tarifState.collectAsState()
+                val ussdServiceState by ussdServiceViewModel.ussdServiceState.collectAsState()
                 NavHost(
                     navController = navController,
                     startDestination = Screen.HomeScreen,
@@ -110,6 +118,18 @@ class MainActivity : ComponentActivity() {
                             tarif = arguments.tarif
                         )
                     }
+
+                    composable<Screen.UssdServiceScreen> {
+                        val arguments = it.toRoute<Screen.UssdServiceScreen>()
+                        UssdServiceScreen(
+                            navController = navController,
+                            colorState = colorState,
+                            ussdServiceState = ussdServiceState,
+                            ussdServiceEvent = ussdServiceViewModel::onEvent,
+                            categoryTypeId = arguments.categoryTypeId
+                        )
+                    }
+
                 }
             }
         }

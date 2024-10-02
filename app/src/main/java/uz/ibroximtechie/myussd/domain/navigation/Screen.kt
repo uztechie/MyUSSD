@@ -14,4 +14,7 @@ sealed class Screen {
 
     @Serializable
     data class TarifDetailScreen(val tarif: Tarif)
+
+    @Serializable
+    data class UssdServiceScreen(val categoryTypeId:Int)
 }
