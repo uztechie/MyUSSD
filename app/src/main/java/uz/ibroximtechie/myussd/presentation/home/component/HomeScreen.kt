@@ -48,6 +48,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -61,8 +62,13 @@ import uz.ibroximtechie.myussd.R
 import uz.ibroximtechie.myussd.common.CategoryType
 import uz.ibroximtechie.myussd.common.ColorEvent
 import uz.ibroximtechie.myussd.common.ColorState
+import uz.ibroximtechie.myussd.common.Constants
 import uz.ibroximtechie.myussd.common.util.CompanyType
+import uz.ibroximtechie.myussd.common.util.Util
+import uz.ibroximtechie.myussd.common.util.Util.findActivity
 import uz.ibroximtechie.myussd.domain.navigation.Screen
+import uz.ibroximtechie.myussd.presentation.home.HomeEvent
+import uz.ibroximtechie.myussd.presentation.home.HomeState
 import uz.ibroximtechie.myussd.ui.theme.ColorBeelineDark
 import uz.ibroximtechie.myussd.ui.theme.ColorMobiuzDark
 import uz.ibroximtechie.myussd.ui.theme.ColorUcellDark
@@ -77,8 +83,13 @@ import uz.ibroximtechie.myussd.ui.theme.mainDividerSpacer
 fun HomeScreen(
     navController: NavController,
     colorState: ColorState,
-    colorEvent: (ColorEvent) -> Unit
+    homeState: HomeState,
+    colorEvent: (ColorEvent) -> Unit,
+    homeEvent: (HomeEvent) -> Unit
 ) {
+
+    val context = LocalContext.current
+
     var selectedIndex by remember {
         mutableStateOf(0)
     }
@@ -224,7 +235,12 @@ fun HomeScreen(
                         )
                     }
                     IconButton(
-                        onClick = { },
+                        onClick = {
+                                  Util.openWebPage(
+                                      context,
+                                      homeState.dealer.user_telegram
+                                  )
+                        },
                     ) {
                         Icon(
                             modifier = Modifier.size(25.dp),
@@ -234,7 +250,12 @@ fun HomeScreen(
                         )
                     }
                     IconButton(
-                        onClick = { },
+                        onClick = {
+                                  Util.share(
+                                      context,
+                                      Constants.APP_URL
+                                  )
+                        },
                     ) {
                         Icon(
                             modifier = Modifier.size(25.dp),
@@ -296,7 +317,7 @@ fun HomeScreen(
                                 modifier = Modifier
                                     .weight(1f)
                                     .clickable {
-                                               navController.navigate(Screen.CodeScreen)
+                                        navController.navigate(Screen.CodeScreen)
                                     },
                                 icon = painterResource(id = R.drawable.ic_panjara),
                                 iconColor = colorState.primaryColor,
@@ -311,7 +332,7 @@ fun HomeScreen(
                                 modifier = Modifier
                                     .weight(1f)
                                     .clickable {
-                                               navController.navigate(Screen.TarifScreen)
+                                        navController.navigate(Screen.TarifScreen)
                                     },
                                 icon = painterResource(id = R.drawable.ic_card),
                                 iconColor = colorState.primaryColor,
@@ -326,8 +347,8 @@ fun HomeScreen(
                                 modifier = Modifier
                                     .weight(1f)
                                     .clickable {
-                                               navController
-                                                   .navigate(Screen.UssdServiceScreen(CategoryType.INTERNET.typeId))
+                                        navController
+                                            .navigate(Screen.UssdServiceScreen(CategoryType.INTERNET.typeId))
                                     },
                                 icon = painterResource(id = R.drawable.ic_world),
                                 iconColor = colorState.primaryColor,
@@ -367,7 +388,10 @@ fun HomeScreen(
                             MainActionButton(
                                 modifier = Modifier
                                     .weight(1f)
-                                    .clickable { },
+                                    .clickable {
+                                        navController
+                                            .navigate(Screen.UssdServiceScreen(CategoryType.SMS.typeId))
+                                    },
                                 icon = painterResource(id = R.drawable.ic_message2),
                                 iconColor = colorState.primaryColor,
                                 text = stringResource(id = R.string.sms_toplamlar)
@@ -380,7 +404,10 @@ fun HomeScreen(
                             MainActionButton(
                                 modifier = Modifier
                                     .weight(1f)
-                                    .clickable { },
+                                    .clickable {
+                                        navController
+                                            .navigate(Screen.UssdServiceScreen(CategoryType.SERVICE.typeId))
+                                    },
                                 icon = painterResource(id = R.drawable.ic_drawer),
                                 iconColor = colorState.primaryColor,
                                 text = stringResource(id = R.string.xizlatlar)
@@ -402,7 +429,12 @@ fun HomeScreen(
                             MainActionButton(
                                 modifier = Modifier
                                     .weight(1f)
-                                    .clickable { },
+                                    .clickable {
+                                               Util.openWebPage(
+                                                   context = context,
+                                                   url = homeState.company.cabinet
+                                               )
+                                    },
                                 icon = painterResource(id = R.drawable.ic_security),
                                 iconColor = colorState.primaryColor,
                                 text = stringResource(id = R.string.kabinet)
@@ -415,7 +447,12 @@ fun HomeScreen(
                             MainActionButton(
                                 modifier = Modifier
                                     .weight(1f)
-                                    .clickable { },
+                                    .clickable {
+                                               Util.callUssd(
+                                                   context.findActivity(),
+                                                   homeState.company.u_balans
+                                               )
+                                    },
                                 icon = painterResource(id = R.drawable.baseline_attach_money_24),
                                 iconColor = colorState.primaryColor,
                                 text = stringResource(id = R.string.balans)
@@ -428,7 +465,12 @@ fun HomeScreen(
                             MainActionButton(
                                 modifier = Modifier
                                     .weight(1f)
-                                    .clickable { },
+                                    .clickable {
+                                        Util.callUssd(
+                                            context.findActivity(),
+                                            homeState.company.callcenter
+                                        )
+                                    },
                                 icon = painterResource(id = R.drawable.operator_white),
                                 iconColor = colorState.primaryColor,
                                 text = stringResource(id = R.string.operator)
@@ -447,7 +489,8 @@ fun HomeScreen(
                         .padding(horizontal = 10.dp)
                         .fillMaxWidth(),
                     colorState = colorState,
-                    colorEvent = colorEvent
+                    colorEvent = colorEvent,
+                    homeEvent = homeEvent
 
                 )
 
@@ -460,7 +503,8 @@ fun HomeScreen(
 fun BottomMenu(
     modifier: Modifier,
     colorState: ColorState,
-    colorEvent: (ColorEvent) -> Unit
+    colorEvent: (ColorEvent) -> Unit,
+    homeEvent: (HomeEvent) -> Unit
 ) {
 
     Card(
@@ -484,6 +528,7 @@ fun BottomMenu(
                     .weight(1f)
                     .clickable {
                         colorEvent(ColorEvent.OnCompanyButtonClick(CompanyType.MOBIUZ.companyId))
+                        homeEvent(HomeEvent.OnCompanyButtonClick(CompanyType.MOBIUZ.companyId))
                     },
                 backgroundColor = ColorMobiuzDark,
                 shape = RoundedCornerShape(10.dp),
@@ -497,6 +542,7 @@ fun BottomMenu(
                     .weight(1f)
                     .clickable {
                         colorEvent(ColorEvent.OnCompanyButtonClick(CompanyType.UZTELECOM.companyId))
+                        homeEvent(HomeEvent.OnCompanyButtonClick(CompanyType.UZTELECOM.companyId))
                     },
                 backgroundColor = ColorUztelecomDark,
                 shape = RoundedCornerShape(10.dp),
@@ -510,6 +556,7 @@ fun BottomMenu(
                     .weight(1f)
                     .clickable {
                         colorEvent(ColorEvent.OnCompanyButtonClick(CompanyType.BEELINE.companyId))
+                        homeEvent(HomeEvent.OnCompanyButtonClick(CompanyType.BEELINE.companyId))
                     },
                 backgroundColor = ColorBeelineDark,
                 shape = RoundedCornerShape(10.dp),
@@ -523,6 +570,7 @@ fun BottomMenu(
                     .weight(1f)
                     .clickable {
                         colorEvent(ColorEvent.OnCompanyButtonClick(CompanyType.UCELL.companyId))
+                        homeEvent(HomeEvent.OnCompanyButtonClick(CompanyType.UCELL.companyId))
                     },
                 backgroundColor = ColorUcellDark,
                 shape = RoundedCornerShape(10.dp),
@@ -562,7 +610,9 @@ fun HomeScreenPreview(
     HomeScreen(
         navController = rememberNavController(),
         colorState = ColorState(),
-        colorEvent = {}
+        homeState = HomeState(),
+        colorEvent = {},
+        homeEvent = {}
     )
 //    BottomMenu()
 }

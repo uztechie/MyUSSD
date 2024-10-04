@@ -48,6 +48,7 @@ import kotlin.reflect.typeOf
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
 
         val repository = UssdRepositoryImpl(UssdDatabase.getInstance(this).dao())
         val homeViewModel by viewModels<HomeViewModel> (
@@ -76,6 +77,7 @@ class MainActivity : ComponentActivity() {
                 val ussdState by ussdViewModel.state.collectAsState()
                 val tarifState by tarifViewModel.tarifState.collectAsState()
                 val ussdServiceState by ussdServiceViewModel.ussdServiceState.collectAsState()
+                val homeState by homeViewModel.state.collectAsState()
                 NavHost(
                     navController = navController,
                     startDestination = Screen.HomeScreen,
@@ -86,7 +88,10 @@ class MainActivity : ComponentActivity() {
                         HomeScreen(
                             navController = navController,
                             colorState = colorState,
-                            colorEvent = colorViewModel::onEvent
+                            homeState = homeState,
+                            colorEvent = colorViewModel::onEvent,
+                            homeEvent = homeViewModel::onEvent
+
                         )
                     }
                     composable<Screen.CodeScreen> {

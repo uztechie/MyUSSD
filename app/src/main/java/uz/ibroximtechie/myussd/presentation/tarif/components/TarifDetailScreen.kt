@@ -36,6 +36,7 @@ import uz.ibroximtechie.myussd.common.components.Header
 import uz.ibroximtechie.myussd.common.util.LanguageType
 import uz.ibroximtechie.myussd.common.util.SharedPref
 import uz.ibroximtechie.myussd.common.util.Util
+import uz.ibroximtechie.myussd.common.util.Util.findActivity
 import uz.ibroximtechie.myussd.ui.theme.backgroundColor
 import uz.ibroximtechie.myussd.ui.theme.contentTextSize
 import uz.ibroximtechie.myussd.ui.theme.contentTextSizeMedium
@@ -120,7 +121,7 @@ fun TarifDetailScreen(
                     modifier = Modifier
                         .weight(1f),
                     onClick = {
-                              Util.callUssd(context, tarif.kod)
+                              Util.callUssd(context.findActivity(), tarif.kod)
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = colorState.primaryColor,

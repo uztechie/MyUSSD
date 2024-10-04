@@ -26,18 +26,15 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.ussd.domain.model.Internet
 import uz.ibroximtechie.myussd.R
 import uz.ibroximtechie.myussd.common.CategoryType
 import uz.ibroximtechie.myussd.common.ColorState
+import uz.ibroximtechie.myussd.common.components.CustomDetailsDialog
 import uz.ibroximtechie.myussd.common.components.CustomTabIndicator
 import uz.ibroximtechie.myussd.common.components.Header
 import uz.ibroximtechie.myussd.common.util.CompanyType
 import uz.ibroximtechie.myussd.common.util.LanguageType
 import uz.ibroximtechie.myussd.common.util.SharedPref
-import uz.ibroximtechie.myussd.domain.navigation.Screen
-import uz.ibroximtechie.myussd.presentation.tarif.TarifEvent
-import uz.ibroximtechie.myussd.presentation.tarif.components.TarifItem
 import uz.ibroximtechie.myussd.presentation.ussdservices.UssdServiceEvent
 import uz.ibroximtechie.myussd.presentation.ussdservices.UssdServiceState
 import uz.ibroximtechie.myussd.ui.theme.backgroundColor
@@ -50,6 +47,7 @@ fun UssdServiceScreen(
     ussdServiceState: UssdServiceState,
     ussdServiceEvent: (UssdServiceEvent) -> Unit
 ) {
+
 
 
     val title = when (colorState.currentCompany) {
@@ -74,6 +72,99 @@ fun UssdServiceScreen(
         }
     }
 
+
+    if (ussdServiceState.showDetailsDialog){
+        var title = ""
+        var desc = ""
+        var code = ""
+        when(colorState.language){
+            LanguageType.UZ->{
+                when(categoryTypeId){
+                    CategoryType.INTERNET.typeId->{
+                        title = ussdServiceState.internet.title_uz?:""
+                        desc = ussdServiceState.internet.desc_uz?:""
+                        code = ussdServiceState.internet.kod?:""
+                    }
+                    CategoryType.MINUTE.typeId->{
+                        title = ussdServiceState.minute.title_uz?:""
+                        desc = ussdServiceState.minute.desc_uz?:""
+                        code = ussdServiceState.minute.kod?:""
+                    }
+                    CategoryType.SMS.typeId->{
+                        title = ussdServiceState.sms.title_uz?:""
+                        desc = ussdServiceState.sms.desc_uz?:""
+                        code = ussdServiceState.sms.kod?:""
+                    }
+                    CategoryType.SERVICE.typeId->{
+                        title = ussdServiceState.service.title_uz?:""
+                        desc = ussdServiceState.service.desc_uz?:""
+                        code = ussdServiceState.service.kod?:""
+                    }
+
+                }
+            }
+            LanguageType.RU->{
+                when(categoryTypeId){
+                    CategoryType.INTERNET.typeId->{
+                        title = ussdServiceState.internet.title_ru?:""
+                        desc = ussdServiceState.internet.desc_ru?:""
+                        code = ussdServiceState.internet.kod?:""
+                    }
+                    CategoryType.MINUTE.typeId->{
+                        title = ussdServiceState.minute.title_ru?:""
+                        desc = ussdServiceState.minute.desc_ru?:""
+                        code = ussdServiceState.minute.kod?:""
+                    }
+                    CategoryType.SMS.typeId->{
+                        title = ussdServiceState.sms.title_ru?:""
+                        desc = ussdServiceState.sms.desc_ru?:""
+                        code = ussdServiceState.sms.kod?:""
+                    }
+                    CategoryType.SERVICE.typeId->{
+                        title = ussdServiceState.service.title_ru?:""
+                        desc = ussdServiceState.service.desc_ru?:""
+                        code = ussdServiceState.service.kod?:""
+                    }
+
+                }
+            }
+            LanguageType.KR->{
+                when(categoryTypeId){
+                    CategoryType.INTERNET.typeId->{
+                        title = ussdServiceState.internet.title_kr?:""
+                        desc = ussdServiceState.internet.desc_kr?:""
+                        code = ussdServiceState.internet.kod?:""
+                    }
+                    CategoryType.MINUTE.typeId->{
+                        title = ussdServiceState.minute.title_kr?:""
+                        desc = ussdServiceState.minute.desc_kr?:""
+                        code = ussdServiceState.minute.kod?:""
+                    }
+                    CategoryType.SMS.typeId->{
+                        title = ussdServiceState.sms.title_kr?:""
+                        desc = ussdServiceState.sms.desc_kr?:""
+                        code = ussdServiceState.sms.kod?:""
+                    }
+                    CategoryType.SERVICE.typeId->{
+                        title = ussdServiceState.service.title_kr?:""
+                        desc = ussdServiceState.service.desc_kr?:""
+                        code = ussdServiceState.service.kod?:""
+                    }
+
+                }
+            }
+        }
+
+
+        CustomDetailsDialog(
+            title = title,
+            desc = desc,
+            code = code,
+            colorState = colorState
+        ) {
+            ussdServiceEvent(UssdServiceEvent.DismissDetailsDialog)
+        }
+    }
 
     var selectedTabIndex by remember {
         mutableStateOf(0)
@@ -199,7 +290,7 @@ fun UssdServiceScreen(
                             UssdServiceItem(
                                 modifier = Modifier
                                     .clickable {
-
+                                        ussdServiceEvent(UssdServiceEvent.OnInternetSelected(internet))
                                     },
                                 colorState = colorState,
                                 title = title,
@@ -209,30 +300,96 @@ fun UssdServiceScreen(
                         }
                     }
                     CategoryType.MINUTE.typeId ->{
-                        items(ussdServiceState.minuteList){ minutes->
+                        items(ussdServiceState.minuteList){ minute->
                             var title = ""
                             var amount = ""
                             when(colorState.language){
                                 LanguageType.UZ->{
-                                    title = minutes.title_uz?:""
-                                    amount = minutes.amount_uz?:""
+                                    title = minute.title_uz?:""
+                                    amount = minute.amount_uz?:""
                                 }
                                 LanguageType.KR->{
-                                    title = minutes.title_kr?:""
-                                    amount = minutes.amount_kr?:""
+                                    title = minute.title_kr?:""
+                                    amount = minute.amount_kr?:""
                                 }
                                 LanguageType.RU->{
-                                    title = minutes.title_ru?:""
-                                    amount = minutes.amount_ru?:""
+                                    title = minute.title_ru?:""
+                                    amount = minute.amount_ru?:""
                                 }
                             }
-                            val price = "${minutes.price} ${stringResource(id = R.string.som)}"
+                            val price = "${minute.price} ${stringResource(id = R.string.som)}"
 
 
                             UssdServiceItem(
                                 modifier = Modifier
                                     .clickable {
+                                        ussdServiceEvent(UssdServiceEvent.OnMinuteSelected(minute))
+                                    },
+                                colorState = colorState,
+                                title = title,
+                                price = price,
+                                amount = amount
+                            )
+                        }
+                    }
+                    CategoryType.SMS.typeId ->{
+                        items(ussdServiceState.smsList){ sms->
+                            var title = ""
+                            var amount = ""
+                            when(colorState.language){
+                                LanguageType.UZ->{
+                                    title = sms.title_uz?:""
+                                    amount = sms.amount_uz?:""
+                                }
+                                LanguageType.KR->{
+                                    title = sms.title_kr?:""
+                                    amount = sms.amount_kr?:""
+                                }
+                                LanguageType.RU->{
+                                    title = sms.title_ru?:""
+                                    amount = sms.amount_ru?:""
+                                }
+                            }
+                            val price = "${sms.price} ${stringResource(id = R.string.som)}"
 
+
+                            UssdServiceItem(
+                                modifier = Modifier
+                                    .clickable {
+                                        ussdServiceEvent(UssdServiceEvent.OnSmsSelected(sms))
+                                    },
+                                colorState = colorState,
+                                title = title,
+                                price = price,
+                                amount = amount
+                            )
+                        }
+                    }
+                    CategoryType.SERVICE.typeId ->{
+                        items(ussdServiceState.serviceList){ service->
+                            var title = ""
+                            var amount = ""
+                            when(colorState.language){
+                                LanguageType.UZ->{
+                                    title = service.title_uz?:""
+                                    amount = service.amount_uz?:""
+                                }
+                                LanguageType.KR->{
+                                    title = service.title_kr?:""
+                                    amount = service.amount_kr?:""
+                                }
+                                LanguageType.RU->{
+                                    title = service.title_ru?:""
+                                    amount = service.amount_ru?:""
+                                }
+                            }
+                            val price = "${service.price} ${stringResource(id = R.string.som)}"
+
+
+                            UssdServiceItem(
+                                modifier = Modifier
+                                    .clickable {
+                                        ussdServiceEvent(UssdServiceEvent.OnServiceSelected(service))
                                     },
                                 colorState = colorState,
                                 title = title,

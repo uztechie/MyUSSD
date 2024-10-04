@@ -30,6 +30,12 @@ class UssdServiceViewModel(val repository: UssdRepository):ViewModel() {
                     CategoryType.MINUTE.typeId ->{
                         getMinutes(catId)
                     }
+                    CategoryType.SMS.typeId ->{
+                        getSms(catId)
+                    }
+                    CategoryType.SERVICE.typeId ->{
+                        getServices(catId)
+                    }
                     else ->{}
                 }
             }
@@ -37,6 +43,46 @@ class UssdServiceViewModel(val repository: UssdRepository):ViewModel() {
             is UssdServiceEvent.OnCategoryTypeSelected ->{
                 val typeId = event.typeId
                 getCategories(typeId)
+            }
+            is UssdServiceEvent.OnInternetSelected ->{
+                val internet = event.internet
+                _ussdServiceState.update {
+                    it.copy(
+                        internet = internet,
+                        showDetailsDialog = true
+                    )
+                }
+            }
+            is UssdServiceEvent.OnMinuteSelected ->{
+                _ussdServiceState.update {
+                    it.copy(
+                        minute = event.minute,
+                        showDetailsDialog = true
+                    )
+                }
+            }
+            is UssdServiceEvent.OnSmsSelected ->{
+                _ussdServiceState.update {
+                    it.copy(
+                        sms = event.sms,
+                        showDetailsDialog = true
+                    )
+                }
+            }
+            is UssdServiceEvent.OnServiceSelected ->{
+                _ussdServiceState.update {
+                    it.copy(
+                        service = event.service,
+                        showDetailsDialog = true
+                    )
+                }
+            }
+            UssdServiceEvent.DismissDetailsDialog ->{
+                _ussdServiceState.update {
+                    it.copy(
+                        showDetailsDialog = false
+                    )
+                }
             }
         }
     }
@@ -74,6 +120,32 @@ class UssdServiceViewModel(val repository: UssdRepository):ViewModel() {
                     _ussdServiceState.update {
                         it.copy(
                             minuteList = minuteList
+                        )
+                    }
+                }
+        }
+    }
+
+    private fun getSms(catId:Int){
+        viewModelScope.launch {
+            repository.getSms(catId = catId)
+                .collectLatest { list->
+                    _ussdServiceState.update {
+                        it.copy(
+                            smsList = list
+                        )
+                    }
+                }
+        }
+    }
+
+    private fun getServices(catId:Int){
+        viewModelScope.launch {
+            repository.getServices(catId = catId)
+                .collectLatest { list->
+                    _ussdServiceState.update {
+                        it.copy(
+                            serviceList = list
                         )
                     }
                 }

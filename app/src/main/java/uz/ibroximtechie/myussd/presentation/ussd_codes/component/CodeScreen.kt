@@ -20,6 +20,7 @@ import uz.ibroximtechie.myussd.common.ColorState
 import uz.ibroximtechie.myussd.common.components.Header
 import uz.ibroximtechie.myussd.common.util.SharedPref
 import uz.ibroximtechie.myussd.common.util.Util
+import uz.ibroximtechie.myussd.common.util.Util.findActivity
 import uz.ibroximtechie.myussd.presentation.ussd_codes.UssdEvent
 import uz.ibroximtechie.myussd.presentation.ussd_codes.UssdState
 import uz.ibroximtechie.myussd.presentation.ussd_codes.UssdViewModel
@@ -58,7 +59,7 @@ fun CodeScreen(
                CodeItemView(
                    modifier = Modifier
                        .clickable {
-                                  Util.callUssd(context, it.code)
+                                  Util.callUssd(context.findActivity(), it.code)
                        },
                    ussdCode = it,
                    color = colorState.primaryColor

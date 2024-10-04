@@ -3,16 +3,24 @@ package uz.ibroximtechie.myussd.common.util
 import android.Manifest
 import android.app.Activity
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.telecom.PhoneAccountHandle
-import android.telecom.TelecomManager
 import androidx.core.app.ActivityCompat
 
 object Util {
 
-    fun callUssd(context: Context, code:String?){
+    fun Context.findActivity(): Activity {
+        var context = this
+        while (context is ContextWrapper) {
+            if (context is Activity) return context
+            context = context.baseContext
+        }
+        throw IllegalStateException("no activity")
+    }
+
+    fun callUssd(activity: Activity, code:String?){
         if (code.isNullOrEmpty()) {
             return
         }
@@ -20,18 +28,24 @@ object Util {
         if (code.contains("#")){
             ussd = code.replace("#", "")
         }
-        val uri = Uri.parse("tel:${ussd}${Uri.encode("#")}")
+        var uri:Uri? = null
+        if (ussd.contains("*")){
+            uri = Uri.parse("tel:${ussd}${Uri.encode("#")}")
+        }
+        else{
+            uri = Uri.parse("tel:${ussd}")
+        }
 
         println("callUssd code=$ussd,  uri=$uri")
         val intent = Intent(Intent.ACTION_DIAL)
         intent.setData(uri)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.putExtra("com.android.phone.force.slot", true)
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED){
-            context.startActivity(intent)
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED){
+            activity.startActivity(intent)
         }
         else{
-            ActivityCompat.requestPermissions(context as Activity, arrayOf(Manifest.permission.CALL_PHONE), 1)
+            ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.CALL_PHONE), 1)
         }
 
 
@@ -53,6 +67,17 @@ object Util {
 
 
 
+    }
+
+    fun openWebPage(context: Context, url:String?){
+        if (url == null){
+            return
+        }
+        println("openWebPage url=$url")
+        if (url.contains("http://") || url.contains("https://")){
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            context.startActivity(intent)
+        }
     }
 
     fun share(context: Context, data: String?){

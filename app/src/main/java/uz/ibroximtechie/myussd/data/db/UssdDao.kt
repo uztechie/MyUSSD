@@ -3,8 +3,11 @@ package uz.ibroximtechie.myussd.data.db
 import androidx.room.Dao
 import androidx.room.Query
 import com.example.ussd.domain.model.Category
+import com.example.ussd.domain.model.Dealer
 import com.example.ussd.domain.model.Internet
 import com.example.ussd.domain.model.Minute
+import com.example.ussd.domain.model.Service
+import com.example.ussd.domain.model.Sms
 import com.example.ussd.domain.model.Tarif
 import kotlinx.coroutines.flow.Flow
 import uz.ibroximtechie.myussd.domain.model.Company
@@ -32,6 +35,16 @@ interface UssdDao {
 
     @Query("select * from minute where catid=:catId")
     fun getMinutes(catId:Int):Flow<List<Minute>>
+
+    @Query("select * from sms where catid=:catId")
+    fun getSms(catId:Int):Flow<List<Sms>>
+
+    @Query("select * from service where catid=:catId")
+    fun getServices(catId:Int):Flow<List<Service>>
+
+    @Query("select * from dealer limit 1")
+    fun getDealer():Flow<Dealer?>
+
 
 
 

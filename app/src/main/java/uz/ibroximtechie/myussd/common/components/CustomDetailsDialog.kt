@@ -1,5 +1,8 @@
 package uz.ibroximtechie.myussd.common.components
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,6 +40,7 @@ import com.example.ussd.domain.model.Tarif
 import uz.ibroximtechie.myussd.R
 import uz.ibroximtechie.myussd.common.ColorState
 import uz.ibroximtechie.myussd.common.util.Util
+import uz.ibroximtechie.myussd.common.util.Util.findActivity
 import uz.ibroximtechie.myussd.ui.theme.contentTextSizeMedium
 import uz.ibroximtechie.myussd.ui.theme.titleMedium
 
@@ -62,7 +66,7 @@ fun CustomDetailsDialog(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.9f)
+                    .fillMaxHeight(0.8f)
                     .padding(15.dp)
             ) {
 
@@ -128,7 +132,7 @@ fun CustomDetailsDialog(
                     modifier = Modifier
                         .fillMaxWidth(),
                     onClick = {
-                        Util.callUssd(context, code)
+                        Util.callUssd(context.findActivity(), code)
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = colorState.primaryColor,
@@ -144,6 +148,8 @@ fun CustomDetailsDialog(
     }
 
 }
+
+
 
 @Preview
 @Composable
